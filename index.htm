@@ -138,13 +138,14 @@
             document.getElementById("nextButton").style.display = "none";
         }
 
-        function selectAnswer(option) {
-            if (option === questions[currentQuestion].correct) {
-                score++;
-            }
-            document.getElementById("result").innerText = questions[currentQuestion].feedback;
-            document.getElementById("nextButton").style.display = "block";
-        }
+       function selectAnswer(option) {
+    // Invertiamo il punteggio: la risposta migliore (0) vale 2 punti, la media (1) vale 1 punto, la peggiore (2) vale 0 punti
+    let points = 2 - option;  
+    score += points;  
+
+    document.getElementById("result").innerText = questions[currentQuestion].feedback;
+    document.getElementById("nextButton").style.display = "block";
+}
 
         function nextQuestion() {
             currentQuestion++;
