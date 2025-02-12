@@ -139,14 +139,14 @@
         }
 
        function selectAnswer(option) {
-    // Invertiamo il punteggio: la risposta migliore (0) vale 2 punti, la media (1) vale 1 punto, la peggiore (2) vale 0 punti
-    let points = 2 - option;  
+    let points = 2 - option;  // La migliore (0) vale 2 punti, la media (1) vale 1, la peggiore (2) vale 0
+    if (points < 0) points = 0; // Evita punteggi negativi
+    if (points > 2) points = 2; // Evita punteggi errati
     score += points;  
 
     document.getElementById("result").innerText = questions[currentQuestion].feedback;
     document.getElementById("nextButton").style.display = "block";
 }
-
         function nextQuestion() {
             currentQuestion++;
             document.getElementById("result").innerText = "";
