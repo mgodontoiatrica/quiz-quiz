@@ -128,44 +128,50 @@
         ];
 
         let currentQuestion = 0;
-        let score = 0;
+let score = 0;
 
-        function loadQuestion() {
-            document.getElementById("question").innerText = questions[currentQuestion].question;
-            document.getElementById("option0").innerText = questions[currentQuestion].options[0];
-            document.getElementById("option1").innerText = questions[currentQuestion].options[1];
-            document.getElementById("option2").innerText = questions[currentQuestion].options[2];
-            document.getElementById("nextButton").style.display = "none";
-        }
+function loadQuestion() {
+    document.getElementById("question").innerText = questions[currentQuestion].question;
+    document.getElementById("option0").innerText = questions[currentQuestion].options[0];
+    document.getElementById("option1").innerText = questions[currentQuestion].options[1];
+    document.getElementById("option2").innerText = questions[currentQuestion].options[2];
+    document.getElementById("nextButton").style.display = "none";
+}
 
-       function selectAnswer(option) {
-    let points = 1 - option;  // La migliore (0) vale 0 punti, la media (1/2) vale 1/2, la peggiore (2) vale 1
-    if (points < 0) points = 0; // Evita punteggi negativi
-    if (points > 2) points = 2; // Evita punteggi errati
-    score += points;  
+function selectAnswer(option) {
+    let points = 2 - option; // Migliore (0) = 2 punti, Intermedia (1) = 1 punto, Peggiore (2) = 0 punti
+    score += points;
 
     document.getElementById("result").innerText = questions[currentQuestion].feedback;
     document.getElementById("nextButton").style.display = "block";
 }
-        function nextQuestion() {
-            currentQuestion++;
-            document.getElementById("result").innerText = "";
-            if (currentQuestion < questions.length) {
-                loadQuestion();
-            } else {
-                let message = "";
-                if (score >= 8) {
-                    message = "Ottimo! La tua salute orale è in ottime condizioni.";
-                } else if (score >= 5) {
-                    message = "Buono! Tuttavia, alcuni aspetti potrebbero essere migliorati.";
-                } else {
-                    message = "È consigliabile fare una visita odontoiatrica per una valutazione più approfondita.";
-                }
-                document.getElementById("quiz").innerHTML = `<h3>Hai ottenuto ${score} su ${questions.length}!</h3><p>${message}</p>`;
-            }
+
+function nextQuestion() {
+    currentQuestion++;
+    document.getElementById("result").innerText = "";
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        let maxScore = questions.length * 2; // Punteggio massimo teorico (es. 20 per 10 domande)
+        let finalScore = (score / maxScore) * 10; // Normalizziamo su scala 0-10
+
+        finalScore = Math.min(10, Math.max(0, finalScore)); // Garantiamo che sia sempre tra 0 e 10
+
+        let message = "";
+        if (finalScore >= 8) {
+            message = "Ottimo! La tua salute orale è in ottime condizioni.";
+        } else if (finalScore >= 5) {
+            message = "Buono! Tuttavia, alcuni aspetti potrebbero essere migliorati.";
+        } else {
+            message = "È consigliabile fare una visita odontoiatrica per una valutazione più approfondita.";
         }
 
-        loadQuestion();
+        document.getElementById("quiz").innerHTML = <h3>Hai ottenuto ${finalScore.toFixed(1)} su 10!</h3><p>${message}</p>;
+    }
+}
+
+loadQuestion();
     </script>
 
 </body>
