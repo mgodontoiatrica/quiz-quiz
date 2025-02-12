@@ -139,7 +139,7 @@ function loadQuestion() {
 }
 
 function selectAnswer(option) {
-    let points = 2 - option; // Migliore (0) = 2 punti, Intermedia (1) = 1 punto, Peggiore (2) = 0 punti
+    let points = 2 - option; // 2 punti per la migliore (0), 1 punto per l'intermedia (1), 0 punti per la peggiore (2)
     score += points;
 
     document.getElementById("result").innerText = questions[currentQuestion].feedback;
@@ -153,10 +153,11 @@ function nextQuestion() {
     if (currentQuestion < questions.length) {
         loadQuestion();
     } else {
-        let maxScore = questions.length * 2; // Punteggio massimo teorico (es. 20 per 10 domande)
-        let finalScore = (score / maxScore) * 10; // Normalizziamo su scala 0-10
+        let maxScore = questions.length * 2; // Punteggio massimo teorico (20 se ci sono 10 domande)
+        let finalScore = (score / maxScore) * 10; // Convertiamo su scala 0-10
 
-        finalScore = Math.min(10, Math.max(0, finalScore)); // Garantiamo che sia sempre tra 0 e 10
+        finalScore = Math.round(finalScore); // Arrotondiamo per avere numeri interi (5, 6, 7, 8...)
+        finalScore = Math.min(10, Math.max(0, finalScore)); // Assicuriamo che sia tra 0 e 10
 
         let message = "";
         if (finalScore >= 8) {
@@ -167,7 +168,7 @@ function nextQuestion() {
             message = "È consigliabile fare una visita odontoiatrica per una valutazione più approfondita.";
         }
 
-        document.getElementById("quiz").innerHTML = <h3>Hai ottenuto ${finalScore.toFixed(1)} su 10!</h3><p>${message}</p>;
+        document.getElementById("quiz").innerHTML = <h3>Hai ottenuto ${finalScore} su 10!</h3><p>${message}</p>;
     }
 }
 
