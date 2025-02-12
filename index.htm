@@ -139,7 +139,7 @@
         }
 
        function selectAnswer(option) {
-    let points = 2 - option;  // La migliore (0) vale 2 punti, la media (1) vale 1, la peggiore (2) vale 0
+    let points = 2 - option;  // La migliore (0) vale 1 punti, la media (1) vale 1/2, la peggiore (2) vale 0
     if (points < 0) points = 0; // Evita punteggi negativi
     if (points > 2) points = 2; // Evita punteggi errati
     score += points;  
