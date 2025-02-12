@@ -139,37 +139,32 @@
         }
 
        function selectAnswer(option) {
-    let points = 2 - option; // La migliore (0) vale 2 punti, la media (1) vale 1 punto, la peggiore (2) vale 0 punti
+    let points = 1 - option;  // La migliore (0) vale 0 punti, la media (1/2) vale 1/2, la peggiore (2) vale 1
+    if (points < 0) points = 0; // Evita punteggi negativi
+    if (points > 2) points = 2; // Evita punteggi errati
     score += points;  
 
     document.getElementById("result").innerText = questions[currentQuestion].feedback;
     document.getElementById("nextButton").style.display = "block";
 }
-
-function nextQuestion() {
-    currentQuestion++;
-    document.getElementById("result").innerText = "";
-    if (currentQuestion < questions.length) {
-        loadQuestion();
-    } else {
-        let maxScore = questions.length * 2; // Punteggio massimo teorico (20 se ci sono 10 domande)
-        let finalScore = (score / maxScore) * 10; // Normalizziamo su scala 0-10
-
-        if (finalScore > 10) finalScore = 10; // Evitiamo valori superiori a 10
-        if (finalScore < 0) finalScore = 0; // Evitiamo valori negativi (anche se non dovrebbe succedere)
-
-        let message = "";
-        if (finalScore >= 8) {
-            message = "Ottimo! La tua salute orale è in ottime condizioni.";
-        } else if (finalScore >= 5) {
-            message = "Buono! Tuttavia, alcuni aspetti potrebbero essere migliorati.";
-        } else {
-            message = "È consigliabile fare una visita odontoiatrica per una valutazione più approfondita.";
+        function nextQuestion() {
+            currentQuestion++;
+            document.getElementById("result").innerText = "";
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                let message = "";
+                if (score >= 8) {
+                    message = "Ottimo! La tua salute orale è in ottime condizioni.";
+                } else if (score >= 5) {
+                    message = "Buono! Tuttavia, alcuni aspetti potrebbero essere migliorati.";
+                } else {
+                    message = "È consigliabile fare una visita odontoiatrica per una valutazione più approfondita.";
+                }
+                document.getElementById("quiz").innerHTML = `<h3>Hai ottenuto ${score} su ${questions.length}!</h3><p>${message}</p>`;
+            }
         }
 
-        document.getElementById("quiz").innerHTML = <h3>Hai ottenuto ${finalScore.toFixed(1)} su 10!</h3><p>${message}</p>;
-    }
-}
         loadQuestion();
     </script>
 
